@@ -27,8 +27,13 @@ namespace ProductCatalogApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var server = Configuration["DatabaseServer"];
+            var database = Configuration["DatabaseName"];
+            var user = Configuration["DatabaseUser"];
+            var password = Configuration["DatabasePassword"];
+            var connectionString = $"Server={server};Database={database};User Id={user};Password={password}";
             services.AddDbContext<CatalogContext>(options =>
-                options.UseSqlServer(Configuration["ConnectionString"]));
+                options.UseSqlServer(connectionString));
             
         }
 
