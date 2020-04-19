@@ -78,7 +78,7 @@ namespace TokenServiceApi
                     ClientId = "basketswaggerui",
                     ClientName = "Basket Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
+                    AllowAccessTokensViaBrowser = true, 
 
                     RedirectUris = { $"{clientUrls["BasketApi"]}/swagger/o2c.html" },
                     PostLogoutRedirectUris = { $"{clientUrls["BasketApi"]}/swagger/" },
