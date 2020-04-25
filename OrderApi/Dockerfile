@@ -3,14 +3,11 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["OrderApi/OrderApi.csproj", "OrderApi/"]
-RUN dotnet restore "OrderApi/OrderApi.csproj"
 COPY . .
-WORKDIR "/src/OrderApi"
+RUN dotnet restore OrderApi.csproj
 RUN dotnet build "OrderApi.csproj" -c Release -o /app/build
 
 FROM build AS publish

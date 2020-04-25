@@ -38,26 +38,6 @@ namespace CartApi.Controllers
         }
 
 
-        [HttpPost("testpost")]
-        public async Task<IActionResult> TestPost()
-        {
-            var value = new Cart("test");
-            value.Items = new List<CartItem>
-                 {
-                     new CartItem
-                     {
-                          Id = "123",
-                          ProductId = "testproduct",
-                           ProductName = "testname",
-                            UnitPrice = 10,
-                             Quantity = 10
-                     }
-                 };
-
-            var basket = await _repository.UpdateCartAsync(value);
-            return Ok(basket);
-        }
-
         [HttpDelete("{id}")]
         public async void Delete(string id)
         {

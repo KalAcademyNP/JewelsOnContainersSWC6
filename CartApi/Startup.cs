@@ -16,6 +16,12 @@ using StackExchange.Redis;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using Autofac;
+using MassTransit;
+using CartApi.Messaging.Consumers;
+using Autofac.Extensions.DependencyInjection;
+using MassTransit.Util;
+using RabbitMQ.Client;
 
 namespace CartApi
 {
@@ -70,6 +76,65 @@ namespace CartApi
 
                 });
             });
+
+            //// Make the autofac container
+            //var builder = new ContainerBuilder();
+            //// register a specific consumer
+            //builder.RegisterType<OrderCompletedEventConsumer>();
+            //builder.Register(c =>
+            //{
+            //    return Bus.Factory.CreateUsingRabbitMq(rmq =>
+            //    {
+            //        rmq.Host(new Uri("rabbitmq://rabbitmq"), "/", h =>
+            //        {
+            //            h.Username("guest");
+            //            h.Password("guest");
+            //        });
+
+            //        rmq.ReceiveEndpoint("JewelsOncontainersApr20" + Guid.NewGuid().ToString(), e =>
+            //        {
+            //            e.Consumer<OrderCompletedEventConsumer>(c);
+
+            //        });
+
+            //    });
+
+            //})
+            //.As<IBusControl>()
+            //.As<IBus>()
+            //.SingleInstance();
+
+            //// Build the container
+            //var container = builder.Build();
+
+            //// Starts Mass Transit Service bus, and registers stopping of bus on app dispose
+            //var bus = container.Resolve<IBusControl>();
+            //bus.Start();
+
+            services.AddMassTransit(cfg =>
+            {
+                cfg.AddConsumer<OrderCompletedEventConsumer>();
+                cfg.AddBus(provider =>
+                {
+                    return Bus.Factory.CreateUsingRabbitMq(rmq =>
+                    {
+                        rmq.Host(new Uri("rabbitmq://rabbitmq"), "/", h =>
+                        {
+                            h.Username("guest");
+                            h.Password("guest");
+                        });
+                        rmq.ReceiveEndpoint("JewelscartApr20", e =>
+                        {
+                            e.ConfigureConsumer<OrderCompletedEventConsumer>(provider);
+
+                        });
+                    });
+
+                });
+            });
+
+            services.AddMassTransitHostedService();
+
         }
 
         private void ConfigureAuthService(IServiceCollection services)
@@ -88,6 +153,7 @@ namespace CartApi
                 options.RequireHttpsMetadata = false;
                 options.Audience = "basket";
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +178,7 @@ namespace CartApi
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
