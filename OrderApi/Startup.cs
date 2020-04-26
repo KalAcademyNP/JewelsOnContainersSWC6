@@ -93,38 +93,6 @@ namespace OrderApi
             });
 
             services.AddMassTransitHostedService();
-
-            //// Make the autofac container
-            //var builder = new ContainerBuilder();
-            //builder.RegisterType<OrderCompletedEvent>();
-            //builder.Register(c =>
-            //{
-            //    return Bus.Factory.CreateUsingRabbitMq(rmq =>
-            //    {
-            //        rmq.Host(new Uri("rabbitmq://rabbitmq"), "/", h =>
-            //        {
-            //            h.Username("guest");
-            //            h.Password("guest");
-            //        });
-            //        rmq.ExchangeType = ExchangeType.Fanout;
-            //    });
-
-            //})
-            //.As<IBusControl>()
-            //.As<IBus>()
-            //.As<IPublishEndpoint>()
-            //.SingleInstance();
-
-            //services.AddSingleton<IPublishEndpoint>(provider => provider.GetRequiredService<IBusControl>());
-            //services.AddSingleton<IBusControl>(provider => provider.GetRequiredService<IBusControl>());
-            //services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
-
-            //// Build the container
-            //var container = builder.Build();
-
-            //// Starts Mass Transit Service bus, and registers stopping of bus on app dispose
-            //var bus = container.Resolve<IBusControl>();
-            //bus.Start();
         }
 
         private void ConfigureAuthService(IServiceCollection services)

@@ -42,7 +42,7 @@ namespace OrderApi.Controllers
             _logger = logger;
         }
 
-        // POST api/v1/Order/new
+        // POST api/Order/new
         [Route("new")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
@@ -51,6 +51,8 @@ namespace OrderApi.Controllers
         {
             order.OrderStatus = OrderStatus.Preparing;
             order.OrderDate = DateTime.UtcNow;
+
+            _logger.LogInformation(" testing ");
 
             _logger.LogInformation(" In Create Order");
             _logger.LogInformation(" Order" + order.UserName);

@@ -77,40 +77,6 @@ namespace CartApi
                 });
             });
 
-            //// Make the autofac container
-            //var builder = new ContainerBuilder();
-            //// register a specific consumer
-            //builder.RegisterType<OrderCompletedEventConsumer>();
-            //builder.Register(c =>
-            //{
-            //    return Bus.Factory.CreateUsingRabbitMq(rmq =>
-            //    {
-            //        rmq.Host(new Uri("rabbitmq://rabbitmq"), "/", h =>
-            //        {
-            //            h.Username("guest");
-            //            h.Password("guest");
-            //        });
-
-            //        rmq.ReceiveEndpoint("JewelsOncontainersApr20" + Guid.NewGuid().ToString(), e =>
-            //        {
-            //            e.Consumer<OrderCompletedEventConsumer>(c);
-
-            //        });
-
-            //    });
-
-            //})
-            //.As<IBusControl>()
-            //.As<IBus>()
-            //.SingleInstance();
-
-            //// Build the container
-            //var container = builder.Build();
-
-            //// Starts Mass Transit Service bus, and registers stopping of bus on app dispose
-            //var bus = container.Resolve<IBusControl>();
-            //bus.Start();
-
             services.AddMassTransit(cfg =>
             {
                 cfg.AddConsumer<OrderCompletedEventConsumer>();

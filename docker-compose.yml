@@ -30,7 +30,13 @@ services:
       context: .\CartApi
       dockerfile: Dockerfile
     image: jewels/cartapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       IdentityUrl: http://192.168.1.34:6700
       ConnectionString: basket.data
     ports:
@@ -49,7 +55,13 @@ services:
       context: .\OrderApi
       dockerfile: Dockerfile
     image: jewels/orderapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       IdentityUrl: http://192.168.1.34:6700
       DatabaseServer: mssqlserver
       DatabaseName: OrdersDb
